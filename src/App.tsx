@@ -4,12 +4,12 @@ import { Summary } from "./component/summary";
 import { EmptyGoals } from "./component/empty-goals";
 import { useQuery } from "@tanstack/react-query";
 import { getSummary } from "./http/get-summary";
-import letStart from "./assets/lets-start.svg";
-import { Label } from "./component/ui/label";
-import { Input } from "./component/ui/input";
-import { Button } from "./component/ui/button";
-import { Mail, KeyRound, ArrowUpRight  } from "lucide-react";
-import { Separator } from "./component/ui/separator";
+// import letStart from "./assets/lets-start.svg";
+// import { Label } from "./component/ui/label";
+// import { Input } from "./component/ui/input";
+// import { Button } from "./component/ui/button";
+// import { Mail, KeyRound, ArrowUpRight  } from "lucide-react";
+// import { Separator } from "./component/ui/separator";
 
 export default function App() {
   const { data } = useQuery({
