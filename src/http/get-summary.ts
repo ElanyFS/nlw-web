@@ -1,4 +1,3 @@
-// import { API } from '../service/api'
 
 type SummaryProps = {
   completed: number

@@ -1,4 +1,3 @@
-// import { API } from "../service/api"
 
 interface CreateGoalRequest {
   title: string
