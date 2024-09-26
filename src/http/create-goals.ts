@@ -1,4 +1,4 @@
-import { API } from "../service/api"
+// import { API } from "../service/api"
 
 interface CreateGoalRequest {
   title: string
