@@ -1,22 +1,23 @@
-import { Dialog } from "./component/ui/dialog";
-import { CreateGoal } from "./component/create-goals";
-import { Summary } from "./component/summary";
-import { EmptyGoals } from "./component/empty-goals";
-import { useQuery } from "@tanstack/react-query";
-import { getSummary } from "./http/get-summary";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Login } from "./pages/Login";
+import { PrivateRouter } from "./service/auth";
+import Dashboard from "./pages/Dashboard";
 
 export default function App() {
-  const { data } = useQuery({
-    queryKey: ["summary"],
-    queryFn: getSummary,
-    staleTime: 1000 * 60,
-  });
-
   return (
-    <Dialog>
-      {data?.total && data.total > 0 ? <Summary /> : <EmptyGoals />}
-
-      <CreateGoal />
-    </Dialog>
+    <Router>
+      <Routes>
+        {/* Rota public */}
+        <Route path="/" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRouter>
+              <Dashboard />
+            </PrivateRouter>
+          }
+        />
+      </Routes>
+    </Router>
   );
 }

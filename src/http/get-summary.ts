@@ -1,4 +1,3 @@
-
 type SummaryProps = {
   completed: number
   total: number
@@ -13,8 +12,21 @@ type SummaryProps = {
 }
 
 export async function getSummary(): Promise<SummaryProps> {
-  const response = await fetch('https://goals-server-api.onrender.com/week-summary')
-  const data = await response.json()  
+  const token = localStorage.getItem('token')
+
+  if (!token) {
+    throw new Error('Usuário não tem permissão')
+  }
+
+  const response = await fetch(
+    'https://goals-server-api.onrender.com/week-summary',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+  const data = await response.json()
 
   return data.summary
 }
