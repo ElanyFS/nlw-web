@@ -26,9 +26,11 @@ type CreateUserForm = z.infer<typeof createUserForm>;
 type LoginUserForm = z.infer<typeof loginUserForm>;
 
 export const Login = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const navigate = useNavigate(); 
-  
+  const navigate = useNavigate();
+
   async function handleCreateUser(data: CreateUserForm) {
     await createUser({
       name: data.name,
@@ -56,16 +58,23 @@ export const Login = () => {
   });
 
   async function handleLoginUser(data: LoginUserForm) {
-    const response = await loginUser({
-      email: data.email,
-      password: data.password,
-    });
-    
-    if(response){
-      resetLoginUserSubmit();
-      navigate('/dashboard')
-    }
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      const response = await loginUser({
+        email: data.email,
+        password: data.password,
+      });
 
+      if (response) {
+        resetLoginUserSubmit();
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      setErrorMessage('E-mail/Senha inválidos.')
+    } finally{
+      setIsLoading(false);
+    }
   }
 
   const [login, setLogin] = useState(true);
@@ -74,15 +83,16 @@ export const Login = () => {
   function handleLogin(tipo: boolean) {
     setLogin(tipo);
   }
+  // sm:w-[60%] h-[65%] flex sm:flex-row flex-col
 
   return (
-    <div className="h-screen flex justify-center items-center">
-      <div className="sm:w-[60%] h-[65%] flex sm:flex-row flex-col bg-slate-50 font-inter shadow-md shadow-slate-900 rounded-e-lg">
+    <div className="h-[98%] md:h-screen flex justify-center items-center py-3">
+      <div className="bg-slate-50 font-inter shadow-md shadow-slate-900 rounded-e-lg w-[90%] h-auto flex flex-col md:flex-row md:w-[70%] lg:w-[60%]">
         <div className="flex-1 flex flex-col items-center justify-around p-2 bg-gradient">
           <h2 className="text-center">
             Bem vindo à nossa plataforma de gereciamento de metas!
           </h2>
-          <img src={letStart} alt="" className="max-w-[170px] max-h-[170px]"/>
+          <img src={letStart} alt="" className="max-w-[170px] max-h-[170px]" />
 
           <p className="text-center text-xs flex">
             Faça login agora e descubra como é fácil transformar seus sonhos em
@@ -91,7 +101,7 @@ export const Login = () => {
           </p>
         </div>
 
-        <div className="flex-1 flex flex-col justify-center gap-4 items-center">
+        <div className="flex-1 flex flex-col justify-center gap-4 items-center p-2">
           <h1 className="font-inter text-violet-600 font-bold text-2xl">
             {login ? "Login" : "SignUp"}
           </h1>
@@ -138,6 +148,8 @@ export const Login = () => {
             </label>
           </div>
 
+          {/* <div className="w-[80%] h-px bg-zinc-600"></div> */}
+
           {login ? (
             <form
               className="flex flex-col justify-between gap-3"
@@ -157,7 +169,7 @@ export const Login = () => {
 
                 <div className="flex flex-col gap-2">
                   <Input
-                     className="bg-zinc-100 text-zinc-800"
+                    className="bg-zinc-100 text-zinc-800"
                     placeholder="Password"
                     autoFocus
                     id="password"
@@ -165,6 +177,14 @@ export const Login = () => {
                     {...registerLoginUser("password")}
                   />
                 </div>
+
+                {errorMessage && (
+                  <p className="text-red-600 text-center">{errorMessage}</p>
+                )}
+
+                {isLoading && (
+                  <p className="text-green-700 text-center">Carregando...</p>
+                )}
 
                 <p className="text-blue-600 text-center text-xs">
                   Forgot password?
@@ -181,7 +201,7 @@ export const Login = () => {
               <div className="flex flex-col gap-2">
                 <div className="flex flex-col gap-2">
                   <Input
-                     className="bg-zinc-100 text-zinc-800"
+                    className="bg-zinc-100 text-zinc-800"
                     placeholder="Full name"
                     autoFocus
                     id="name"
@@ -192,7 +212,7 @@ export const Login = () => {
 
                 <div className="flex flex-col gap-2">
                   <Input
-                     className="bg-zinc-100 text-zinc-800"
+                    className="bg-zinc-100 text-zinc-800"
                     placeholder="Email"
                     autoFocus
                     id="email"
@@ -203,7 +223,7 @@ export const Login = () => {
 
                 <div className="flex flex-col gap-2">
                   <Input
-                     className="bg-zinc-100 text-zinc-800"
+                    className="bg-zinc-100 text-zinc-800"
                     placeholder="Password"
                     id="password"
                     type="password"
